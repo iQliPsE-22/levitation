@@ -7,7 +7,7 @@ const Login = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const user = document.getElementById("admin-user").value;
+    const user = document.getElementById("user").value;
     const pass = document.getElementById("pass").value;
 
     if (user === "" || pass === "") {
@@ -16,16 +16,13 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://backend-acasync.vercel.app/admin-login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: user, password: pass }),
-        }
-      );
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: user, password: pass }),
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -39,11 +36,10 @@ const Login = () => {
         alert("Invalid credentials");
       } else {
         console.log("Admin logged in successfully");
-        navigate("/admin/dashboard");
+        navigate("/dashboard");
       }
     } catch (err) {
       console.error("Error logging in:", err);
-      alert("An error occurred. Please try again.");
     }
   };
 
@@ -64,7 +60,7 @@ const Login = () => {
         <label htmlFor="admin-user">Email</label>
         <input
           type="text"
-          id="admin-user"
+          id="user"
           name="userId"
           className="p-2 rounded-md border-none bg-gray-200 text-black"
           placeholder="Email"

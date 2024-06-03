@@ -12,7 +12,6 @@ const Signup = () => {
     email: "",
     phone: "",
     password: "",
-    confirm: "",
   });
 
   const handleFormSubmit = async (e) => {
@@ -26,9 +25,8 @@ const Signup = () => {
       formDataToSubmit.append("email", formData.email);
       formDataToSubmit.append("phone", formData.phone);
       formDataToSubmit.append("password", formData.password);
-      formDataToSubmit.append("confirm", formData.confirm);
 
-      const response = await fetch("https://backend-acasync.vercel.app/admin", {
+      const response = await fetch("http://localhost:3000/signup", {
         method: "POST",
         body: formDataToSubmit,
       });
@@ -41,9 +39,8 @@ const Signup = () => {
         email: "",
         phone: "",
         password: "",
-        confirm: "",
       });
-      navigate("/admin/login");
+      if (data.message === "Admin created successfully") navigate("/login");
     } catch (error) {
       console.error("Error submitting admin data:", error);
     }
