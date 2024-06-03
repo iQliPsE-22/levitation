@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
-import Button from "./../components/Button";
+import Button from "../components/Button";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
