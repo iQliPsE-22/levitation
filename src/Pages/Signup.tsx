@@ -29,17 +29,23 @@ const Signup: React.FC = () => {
     try {
       console.log("SuccessFull");
       const formDataToSubmit = new FormData();
-      formDataToSubmit.append("profilePicture", formData.profilePicture as Blob);
+      formDataToSubmit.append(
+        "profilePicture",
+        formData.profilePicture as Blob
+      );
       formDataToSubmit.append("firstName", formData.firstName);
       formDataToSubmit.append("lastName", formData.lastName);
       formDataToSubmit.append("email", formData.email);
       formDataToSubmit.append("phone", formData.phone);
       formDataToSubmit.append("password", formData.password);
 
-      const response = await fetch("http://localhost:3000/signup", {
-        method: "POST",
-        body: formDataToSubmit,
-      });
+      const response = await fetch(
+        "https://levitation-back.vercel.app/signup",
+        {
+          method: "POST",
+          body: formDataToSubmit,
+        }
+      );
       const data = await response.json();
       console.log(data);
       setFormData({
