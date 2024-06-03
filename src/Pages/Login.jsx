@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
+import Button from "./../components/Button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -81,11 +82,8 @@ const Login = () => {
           value="Login"
           className="p-3 mt-5 bg-[#6d28d9] text-white cursor-pointer rounded-lg hover:bg-[#46198c]"
         />
-
         <Link to="/signup">
-          <button className="p-3 mt-2 bg-gray-800 text-white cursor-pointer rounded-lg w-full hover:bg-gray-900">
-            Not Registered?
-          </button>
+          <Button>Not Registered ?</Button>
         </Link>
       </form>
     </div>

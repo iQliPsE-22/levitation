@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
+import Button from "../components/Button";
 const Signup = () => {
   const navigate = useNavigate();
 
@@ -152,9 +153,7 @@ const Signup = () => {
           />
 
           <Link to="/login">
-            <button className="p-3 mt-2 bg-gray-800 text-white cursor-pointer rounded-lg w-full hover:bg-gray-900">
-              Existing User? Login Here
-            </button>
+            <Button>Existing User? Login Here</Button>
           </Link>
         </form>
       </div>
