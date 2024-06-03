@@ -15,7 +15,6 @@ const Login: React.FC = () => {
       alert("Please fill all the fields");
       return;
     }
-
     try {
       const response = await fetch("https://levitation-back.vercel.app/login", {
         method: "POST",
