@@ -77,7 +77,7 @@ const Login: React.FC = () => {
         <Button color="#6d28d9" hoverColor="#46198c">
           Login
         </Button>
-        <Link to="/signup">
+        <Link to="/">
           <Button color="rgb(31 41 55)" hoverColor="#111827">
             Not Registered ?
           </Button>
