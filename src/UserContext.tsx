@@ -1,9 +1,22 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-const UserContext = createContext();
+interface UserData {
+  profilePicture: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
 
-export const UserProvider = ({ children }) => {
-  const [userData, setUserData] = useState(() => {
+interface UserContextType {
+  userData: UserData;
+  setUserData: React.Dispatch<React.SetStateAction<UserData>>;
+}
+
+const UserContext = createContext<UserContextType | undefined>(undefined);
+
+export const UserProvider: React.FC = ({ children }) => {
+  const [userData, setUserData] = useState<UserData>(() => {
     if (typeof window !== "undefined") {
       const storedUserData = localStorage.getItem("userData");
       return storedUserData
@@ -40,4 +53,11 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export const useUser = () => useContext(UserContext);
+export const useUser = (): UserContextType => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  return context;
+};
+
