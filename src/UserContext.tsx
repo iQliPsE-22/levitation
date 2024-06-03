@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface UserData {
   profilePicture: string | null;
@@ -15,7 +15,11 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC = ({ children }) => {
+interface UserProviderProps {
+  children: ReactNode;
+}
+
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userData, setUserData] = useState<UserData>(() => {
     if (typeof window !== "undefined") {
       const storedUserData = localStorage.getItem("userData");
@@ -60,4 +64,3 @@ export const useUser = (): UserContextType => {
   }
   return context;
 };
-
