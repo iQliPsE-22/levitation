@@ -1,11 +1,21 @@
-import { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import Button from "../components/Button";
-const Signup = () => {
+
+interface FormData {
+  profilePicture: File | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
+const Signup: React.FC = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     profilePicture: null,
     firstName: "",
     lastName: "",
@@ -14,12 +24,12 @@ const Signup = () => {
     password: "",
   });
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       console.log("SuccessFull");
       const formDataToSubmit = new FormData();
-      formDataToSubmit.append("profilePicture", formData.profilePicture);
+      formDataToSubmit.append("profilePicture", formData.profilePicture as Blob);
       formDataToSubmit.append("firstName", formData.firstName);
       formDataToSubmit.append("lastName", formData.lastName);
       formDataToSubmit.append("email", formData.email);
@@ -46,15 +56,15 @@ const Signup = () => {
     }
   };
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
+  const handleProfilePictureChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
     setFormData((prevFormData) => ({
       ...prevFormData,
       profilePicture: file,
     }));
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -143,14 +153,14 @@ const Signup = () => {
             type="password"
             className="p-2 rounded-md border-none bg-gray-200 text-black"
           />
-          <input
-            type="submit"
-            value="Signup"
-            className="p-3 mt-5 bg-[#6d28d9] text-white cursor-pointer rounded-lg hover:bg-[#46198c]"
-          />
+          <Button color="#6d28d9" hoverColor="#46198c">
+            Sign Up
+          </Button>
 
           <Link to="/login">
-            <Button>Existing User? Login Here</Button>
+            <Button color="rgb(31 41 55)" hoverColor="#111827">
+              Existing User? Login Here
+            </Button>
           </Link>
         </form>
       </div>

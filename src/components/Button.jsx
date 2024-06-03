@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Button = (props) => {
+  const [hovered, setHovered] = useState(false);
   return (
     <div>
-      <button className="p-3 mt-2 bg-gray-800 text-white cursor-pointer rounded-lg w-full hover:bg-gray-900">
+      <button
+        className="p-3 mt-2 text-white cursor-pointer rounded-lg w-full"
+        style={{ backgroundColor: hovered ? props.hoverColor : props.color }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         {props.children}
       </button>
     </div>

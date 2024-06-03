@@ -1,14 +1,15 @@
+import React, { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import Button from "./../components/Button";
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const user = document.getElementById("user").value;
-    const pass = document.getElementById("pass").value;
+    const user = (document.getElementById("user") as HTMLInputElement).value;
+    const pass = (document.getElementById("pass") as HTMLInputElement).value;
 
     if (user === "" || pass === "") {
       alert("Please fill all the fields");
@@ -73,13 +74,13 @@ const Login = () => {
           className="p-2 rounded-md border-none bg-gray-200 text-black"
           placeholder="Password"
         />
-        <input
-          type="submit"
-          value="Login"
-          className="p-3 mt-5 bg-[#6d28d9] text-white cursor-pointer rounded-lg hover:bg-[#46198c]"
-        />
+        <Button color="#6d28d9" hoverColor="#46198c">
+          Login
+        </Button>
         <Link to="/signup">
-          <Button>Not Registered ?</Button>
+          <Button color="rgb(31 41 55)" hoverColor="#111827">
+            Not Registered ?
+          </Button>
         </Link>
       </form>
     </div>
