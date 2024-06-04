@@ -32,14 +32,14 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const futureDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000); // Adding 15 days in milliseconds
 
   const handleDownload = async () => {
-    const formData = new FormData();
-    formData.append("cart", JSON.stringify(cart));
-    formData.append("userData", JSON.stringify(userData));
     const response = await fetch(
       "https://levitation-back.vercel.app/generate-invoice",
       {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cart),
       }
     );
 
@@ -59,19 +59,18 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `https://levitation-back.vercel.app/cart/${userData.email}`
-      ); // Fetch cart data specific to the user
-      const data = await response.json();
-      console.log(data);
-      setCart(data);
-      if (response.ok) {
-        setCart(data);
+        `http://localhost:3000/cart/${userData.email}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart data");
       }
+      const data = await response.json();
+      console.log("Fetched cart data:", data);
+      setCart(data);
     } catch (err) {
       console.error("Error fetching cart:", err);
     }
   };
-
   useEffect(() => {
     if (userData.email) {
       fetchCart();
