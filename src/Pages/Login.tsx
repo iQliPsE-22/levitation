@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import { useUser } from "../UserContext";
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const {  setUserData } = useUser();
+  const { setUserData } = useUser();
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const user = (document.getElementById("user") as HTMLInputElement).value;
@@ -16,8 +16,7 @@ const Login: React.FC = () => {
       return;
     }
     try {
-      // const response = await fetch("https://levitation-back.vercel.app/login", {
-        const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch("https://levitation-back.vercel.app/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

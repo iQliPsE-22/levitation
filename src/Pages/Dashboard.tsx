@@ -25,7 +25,7 @@ const Dashboard: React.FC = ({ cart, setCart }) => {
   const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/cart", {
+      const response = await fetch("https://levitation-back.vercel.app/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +35,6 @@ const Dashboard: React.FC = ({ cart, setCart }) => {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        
         // setCart([...cart, formData]);
         handleCart();
         setFormData({
@@ -52,7 +51,7 @@ const Dashboard: React.FC = ({ cart, setCart }) => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/cart/${userData.email}`
+        `https://levitation-back.vercel.app/cart/${userData.email}`
       ); // Fetch cart data specific to the user
       const data = await response.json();
       console.log(data);
