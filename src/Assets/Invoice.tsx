@@ -1,28 +1,14 @@
 import React, { useEffect } from "react";
-import logo from "../Assets/levi.png";
+import logo from "../Assets/";
 import { useUser } from "../UserContext";
 
-interface Product {
-  email: string;
-  name: string;
-  quantity: number;
-  price: number;
-}
-
-interface InvoiceProps {
-  cart: Product[];
-  setCart: React.Dispatch<React.SetStateAction<Product[]>>;
-}
-
-const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
+const Invoice = ({ cart, setCart }) => {
   const { userData } = useUser();
 
-  const calculateTotal = (quantity: number, price: number): number =>
-    quantity * price;
+  const calculateTotal = (quantity, price) => quantity * price;
 
   const totalAmount = cart.reduce(
-    (acc: number, item: Product) =>
-      acc + calculateTotal(item.quantity, item.price),
+    (acc, item) => acc + calculateTotal(item.quantity, item.price),
     0
   );
 
@@ -32,14 +18,15 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const futureDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000); // Adding 15 days in milliseconds
 
   const handleDownload = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/generate-invoice", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cart),
-      });
+    const response = await fetch("http://localhost:3000/generate-invoice", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ cart, userData }),
+    });
+
+    if (response.ok) {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -48,9 +35,8 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      
-    } catch (err) {
-      console.error("Error downloading invoice:", err);
+    } else {
+      console.error("Failed to download the PDF.");
     }
   };
 
@@ -60,18 +46,17 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `https://levitation-back.vercel.app/cart/${userData.email}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch cart data");
-      }
+        `http://localhost:3000/cart/${userData.email}`
+      ); // Fetch cart data specific to the user
       const data = await response.json();
-      console.log("Fetched cart data:", data);
-      setCart(data);
+      if (response.ok) {
+        setCart(data);
+      }
     } catch (err) {
       console.error("Error fetching cart:", err);
     }
   };
+
   useEffect(() => {
     if (userData.email) {
       fetchCart();
@@ -87,7 +72,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
         <div className="flex justify-between items-center mt-8">
           <div>
             <div className="flex">
-              <img src={logo} className="h-10 w-10" />
+              <img src={logo} className="h-10 w-10" alt="logo" />
               <h2 className="text-2xl font-bold">levitation</h2>
             </div>
             <p className="text-gray-500 text-right">infotech</p>
@@ -104,7 +89,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
           </tr>
         </thead>
         <tbody>
-          {cart.map((item: Product, index: number) => (
+          {cart.map((item, index) => (
             <tr key={index}>
               <td>{item.name}</td>
               <td className="text-center">{item.quantity}</td>
