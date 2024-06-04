@@ -1,14 +1,22 @@
 import React, { useEffect } from "react";
 import logo from "../Assets/levi.png";
 import { useUser } from "../UserContext";
+import { Product } from "../App"; // Adjust the import path as necessary
 
-const Invoice = ({ cart, setCart }) => {
+interface InvoiceProps {
+  cart: Product[];
+  setCart: React.Dispatch<React.SetStateAction<Product[]>>;
+}
+
+const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const { userData } = useUser();
 
-  const calculateTotal = (quantity, price) => quantity * price;
+  const calculateTotal = (quantity: number, price: number): number =>
+    quantity * price;
 
   const totalAmount = cart.reduce(
-    (acc, item) => acc + calculateTotal(item.quantity, item.price),
+    (acc: number, item: Product) =>
+      acc + calculateTotal(item.quantity, item.price),
     0
   );
 
@@ -18,34 +26,34 @@ const Invoice = ({ cart, setCart }) => {
   const futureDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000); // Adding 15 days in milliseconds
 
   const handleDownload = async () => {
+    const formData = new FormData();
+    formData.append("cart", JSON.stringify(cart));
+    formData.append("userData", JSON.stringify(userData));
     const response = await fetch("http://localhost:3000/generate-invoice", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cart, userData }),
+      body: formData,
     });
-
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "invoice.pdf";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } else {
-      console.error("Failed to download the PDF.");
-    }
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "invoice.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   };
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const isPdf = searchParams.get("pdf") === "true";
 
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `https://levitation-back.vercel.app/cart/${userData.email}`
+        `http://localhost:3000/cart/${userData.email}`
       ); // Fetch cart data specific to the user
       const data = await response.json();
+      console.log(data);
+      setCart(data);
       if (response.ok) {
         setCart(data);
       }
@@ -69,7 +77,7 @@ const Invoice = ({ cart, setCart }) => {
         <div className="flex justify-between items-center mt-8">
           <div>
             <div className="flex">
-              <img src={logo} className="h-10 w-10" alt="logo" />
+              <img src={logo} className="h-10 w-10" />
               <h2 className="text-2xl font-bold">levitation</h2>
             </div>
             <p className="text-gray-500 text-right">infotech</p>
@@ -86,7 +94,7 @@ const Invoice = ({ cart, setCart }) => {
           </tr>
         </thead>
         <tbody>
-          {cart.map((item, index) => (
+          {cart.map((item: Product, index: number) => (
             <tr key={index}>
               <td>{item.name}</td>
               <td className="text-center">{item.quantity}</td>
@@ -126,12 +134,14 @@ const Invoice = ({ cart, setCart }) => {
           and careful attention.
         </p>
       </div>
-      <button
-        onClick={handleDownload}
-        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-      >
-        Download PDF
-      </button>
+      {!isPdf && (
+        <button
+          onClick={handleDownload}
+          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+        >
+          Download PDF
+        </button>
+      )}
     </div>
   );
 };
