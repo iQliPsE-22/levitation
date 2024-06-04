@@ -40,9 +40,6 @@ const Invoice = ({ cart, setCart }) => {
     }
   };
 
-  const searchParams = new URLSearchParams(window.location.search);
-  const isPdf = searchParams.get("pdf") === "true";
-
   const fetchCart = async () => {
     try {
       const response = await fetch(
@@ -129,14 +126,12 @@ const Invoice = ({ cart, setCart }) => {
           and careful attention.
         </p>
       </div>
-      {!isPdf && (
-        <button
-          onClick={handleDownload}
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-        >
-          Download PDF
-        </button>
-      )}
+      <button
+        onClick={handleDownload}
+        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+      >
+        Download PDF
+      </button>
     </div>
   );
 };
