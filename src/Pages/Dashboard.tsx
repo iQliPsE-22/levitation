@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
+
 interface Product {
   email: string;
   name: string;
@@ -10,7 +11,12 @@ interface Product {
   price: number;
 }
 
-const Dashboard: React.FC = ({ cart, setCart }) => {
+interface DashboardProps {
+  cart: Product[];
+  setCart: React.Dispatch<React.SetStateAction<Product[]>>;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
   const { userData } = useUser();
   const [formData, setFormData] = useState<Product>({
     email: userData.email,
@@ -18,10 +24,11 @@ const Dashboard: React.FC = ({ cart, setCart }) => {
     quantity: 0,
     price: 0,
   });
-  // const [cart, setCart] = useState<Product[]>([]);
+
   const handleCart = () => {
     setCart([...cart, formData]);
   };
+
   const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
