@@ -10,7 +10,7 @@ interface Product {
   price: number;
 }
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = ({ cart, setCart }) => {
   const { userData } = useUser();
   const [formData, setFormData] = useState<Product>({
     email: userData.email,
@@ -18,7 +18,10 @@ const Dashboard: React.FC = () => {
     quantity: 0,
     price: 0,
   });
-  const [cart, setCart] = useState<Product[]>([]);
+  // const [cart, setCart] = useState<Product[]>([]);
+  const handleCart = () => {
+    setCart([...cart, formData]);
+  };
   const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -32,7 +35,9 @@ const Dashboard: React.FC = () => {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        setCart([...cart, formData]);
+        
+        // setCart([...cart, formData]);
+        handleCart();
         setFormData({
           email: userData.email,
           name: "",
