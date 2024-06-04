@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Dashboard from "./Pages/Dashboard";
 import Invoice from "./Pages/Invoice";
+
 interface Product {
   email: string;
   name: string;
   quantity: number;
   price: number;
 }
+
 const App = () => {
   const [cart, setCart] = useState<Product[]>([]);
+
   return (
     <div>
       <BrowserRouter>
@@ -24,7 +27,7 @@ const App = () => {
             element={<Dashboard cart={cart} setCart={setCart} />}
           />
           <Route
-            path="invoice"
+            path="/invoice"
             element={<Invoice cart={cart} setCart={setCart} />}
           />
         </Routes>
