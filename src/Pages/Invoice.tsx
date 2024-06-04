@@ -35,10 +35,13 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
     const formData = new FormData();
     formData.append("cart", JSON.stringify(cart));
     formData.append("userData", JSON.stringify(userData));
-    const response = await fetch("http://localhost:3000/generate-invoice", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      "https://levitation-back.vercel.app/generate-invoice",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
