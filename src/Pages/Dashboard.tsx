@@ -12,13 +12,12 @@ interface Product {
 const Dashboard: React.FC = () => {
   const { userData } = useUser();
   const [formData, setFormData] = useState<Product>({
-    user: userData._id,
+    user: userData.email,
     name: "",
     quantity: 0,
     price: 0,
   });
   const [cart, setCart] = useState<Product[]>([]);
-  const [cartData, setCartData] = useState<Product[]>([]);
   const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -33,9 +32,8 @@ const Dashboard: React.FC = () => {
       console.log(data);
       if (response.ok) {
         setCart([...cart, formData]);
-        setCartData([...cartData, formData]);
         setFormData({
-          user: userData._id,
+          user: userData.email,
           name: "",
           quantity: 0,
           price: 0,
@@ -48,13 +46,12 @@ const Dashboard: React.FC = () => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/cart/${userData._id}`
+        `http://localhost:3000/cart/${userData.email}`
       ); // Fetch cart data specific to the user
       const data = await response.json();
       console.log(data);
       if (response.ok) {
         setCart(data);
-        setCartData(data);
       }
     } catch (err) {
       console.error("Error fetching cart:", err);
@@ -62,7 +59,7 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (userData._id) {
+    if (userData.email) {
       fetchCart();
     }
   }, [userData]);
@@ -128,7 +125,7 @@ const Dashboard: React.FC = () => {
               </div>
               <input
                 type="number"
-                placeholder="Enter Rate "
+                placeholder="Enter Rate"
                 value={formData.price}
                 onChange={(e) =>
                   setFormData({
@@ -156,7 +153,7 @@ const Dashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartData.map((item, index) => (
+                  {cart.map((item, index) => (
                     <tr key={index} className="border-b border-gray-700">
                       <td className="p-4">{item.name}</td>
                       <td className="p-4">
