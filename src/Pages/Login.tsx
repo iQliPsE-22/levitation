@@ -2,10 +2,10 @@ import React, { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import Button from "../components/Button";
-
+import { useUser } from "../UserContext";
 const Login: React.FC = () => {
   const navigate = useNavigate();
-
+  const {  setUserData } = useUser();
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const user = (document.getElementById("user") as HTMLInputElement).value;
@@ -24,12 +24,12 @@ const Login: React.FC = () => {
         body: JSON.stringify({ email: user, password: pass }),
       });
 
+      const data = await response.json();
+      console.log(data);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-
-      const data = await response.json();
-      console.log(data.admin);
+      setUserData(data.admin);
       if (data.message === "Admin not found") {
         alert("Admin not found");
       } else if (data.message === "Invalid credentials") {

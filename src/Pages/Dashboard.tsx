@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import Button from '../components/Button';
-import Header from '../components/Header';
-import { Link } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import Button from "../components/Button";
+import Header from "../components/Header";
+import { Link } from "react-router-dom";
+import { useUser } from "../UserContext";
 interface Product {
   name: string;
   quantity: number;
@@ -10,30 +10,62 @@ interface Product {
 }
 
 const Dashboard: React.FC = () => {
+  const { userData } = useUser();
   const [formData, setFormData] = useState<Product>({
-    name: '',
+    user: userData._id,
+    name: "",
     quantity: 0,
     price: 0,
   });
-
   const [cart, setCart] = useState<Product[]>([]);
-
-  const handleProduct = (e: React.FormEvent<HTMLFormElement>) => {
+  const [cartData, setCartData] = useState<Product[]>([]);
+  const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const newProduct: Product = {
-       ...formData,
-        quantity: parseInt(formData.quantity.toString(), 10),
-        price: parseFloat(formData.price.toString()),
-      };
-      setCart([...cart, newProduct]);
-      console.log('Cart:', cart);
-      setFormData({ name: '', quantity: 0, price: 0 });
+      const response = await fetch("http://localhost:3000/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setCart([...cart, formData]);
+        setCartData([...cartData, formData]);
+        setFormData({
+          user: userData._id,
+          name: "",
+          quantity: 0,
+          price: 0,
+        });
+      }
     } catch (err) {
-      console.error('Error adding product:', err);
+      console.error("Error adding product:", err);
+    }
+  };
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/cart/${userData._id}`
+      ); // Fetch cart data specific to the user
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setCart(data);
+        setCartData(data);
+      }
+    } catch (err) {
+      console.error("Error fetching cart:", err);
     }
   };
 
+  useEffect(() => {
+    if (userData._id) {
+      fetchCart();
+    }
+  }, [userData]);
   return (
     <>
       <Header />
@@ -47,12 +79,12 @@ const Dashboard: React.FC = () => {
             >
               <input
                 type="text"
-                placeholder="Item Name"
+                placeholder="Enter Your Item"
                 value={formData.name}
                 onChange={(e) =>
-                  setFormData({...formData, name: e.target.value })
+                  setFormData({ ...formData, name: e.target.value })
                 }
-                className="p-2 rounded-md border-none bg-gray-200 text-black"
+                className="p-3 rounded-md border-none bg-gray-200 text-black"
                 required
               />
               <div className="flex items-center justify-center text-center">
@@ -60,51 +92,51 @@ const Dashboard: React.FC = () => {
                   type="button"
                   onClick={() =>
                     setFormData({
-                     ...formData,
+                      ...formData,
                       quantity: formData.quantity - 1,
                     })
                   }
-                  className="w-1/4 rounded-md border-none bg-gray-200 text-black p-2"
+                  className="w-1/4 rounded-md border-none bg-gray-200 text-black p-3"
                 >
                   -
                 </button>
                 <input
                   type="number"
-                  placeholder="Item Quantity"
+                  placeholder="Enter Quantity"
                   value={formData.quantity}
                   onChange={(e) =>
                     setFormData({
-                     ...formData,
+                      ...formData,
                       quantity: parseInt(e.target.value, 10),
                     })
                   }
-                  className="p-2 rounded-md border-none bg-[#202020] text-white w-1/2 text-center"
+                  className="p-3 rounded-md border-none bg-[#202020] text-white w-1/2 text-center"
                   required
                 />
                 <button
                   type="button"
                   onClick={() =>
                     setFormData({
-                     ...formData,
+                      ...formData,
                       quantity: formData.quantity + 1,
                     })
                   }
-                  className="w-1/4 rounded-md border-none bg-gray-200 text-black p-2"
+                  className="w-1/4 rounded-md border-none bg-gray-200 text-black p-3"
                 >
                   +
                 </button>
               </div>
               <input
                 type="number"
-                placeholder="Item Price"
+                placeholder="Enter Rate "
                 value={formData.price}
                 onChange={(e) =>
                   setFormData({
-                   ...formData,
+                    ...formData,
                     price: parseFloat(e.target.value),
                   })
                 }
-                className="p-2 rounded-md border-none bg-gray-200 text-black"
+                className="p-3 rounded-md border-none bg-gray-200 text-black"
                 required
               />
               <Button color="#6d28d9" hoverColor="#7c3aed">
@@ -114,7 +146,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="ml-2 w-1/2 bg-gray-900 min-h-full p-8 text-center rounded">
             <h2 className="julius text-2xl mb-4">Cart</h2>
-            {cart.length > 0? (
+            {cart.length > 0 ? (
               <table className="w-full bg-gray-800 text-white rounded-lg">
                 <thead className="w-full">
                   <tr className="w-full bg-gray-900">
@@ -124,7 +156,7 @@ const Dashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cart.map((item, index) => (
+                  {cartData.map((item, index) => (
                     <tr key={index} className="border-b border-gray-700">
                       <td className="p-4">{item.name}</td>
                       <td className="p-4">
@@ -140,7 +172,10 @@ const Dashboard: React.FC = () => {
                       Subtotal
                     </td>
                     <td className="p-4 font-bold">
-                      {cart.reduce((acc, item) => acc + item.quantity * item.price, 0)}
+                      {cart.reduce(
+                        (acc, item) => acc + item.quantity * item.price,
+                        0
+                      )}
                     </td>
                   </tr>
                   <tr className="bg-gray-900">
@@ -148,7 +183,12 @@ const Dashboard: React.FC = () => {
                       GST (18%)
                     </td>
                     <td className="p-4 font-bold">
-                      {(cart.reduce((acc, item) => acc + item.quantity * item.price, 0) * 0.18).toFixed(2)}
+                      {(
+                        cart.reduce(
+                          (acc, item) => acc + item.quantity * item.price,
+                          0
+                        ) * 0.18
+                      ).toFixed(2)}
                     </td>
                   </tr>
                   <tr className="bg-gray-900">
@@ -156,7 +196,12 @@ const Dashboard: React.FC = () => {
                       Grand Total
                     </td>
                     <td className="p-4 font-bold">
-                      {(cart.reduce((acc, item) => acc + item.quantity * item.price, 0) * 1.18).toFixed(2)}
+                      {(
+                        cart.reduce(
+                          (acc, item) => acc + item.quantity * item.price,
+                          0
+                        ) * 1.18
+                      ).toFixed(2)}
                     </td>
                   </tr>
                 </tfoot>
