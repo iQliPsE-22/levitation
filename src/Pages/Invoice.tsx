@@ -42,6 +42,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
         body: formData,
       }
     );
+
     const blob = await response.blob();
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -58,7 +59,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/cart/${userData.email}`
+        `https://levitation-back.vercel.app/cart/${userData.email}`
       ); // Fetch cart data specific to the user
       const data = await response.json();
       console.log(data);
