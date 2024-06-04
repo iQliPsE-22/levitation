@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
 interface Product {
+  user: string;
   name: string;
   quantity: number;
   price: number;
