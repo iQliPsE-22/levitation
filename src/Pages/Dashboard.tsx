@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
 interface Product {
-  user: string;
+  email: string;
   name: string;
   quantity: number;
   price: number;
@@ -13,7 +13,7 @@ interface Product {
 const Dashboard: React.FC = () => {
   const { userData } = useUser();
   const [formData, setFormData] = useState<Product>({
-    user: userData.email,
+    email: userData.email,
     name: "",
     quantity: 0,
     price: 0,
@@ -34,7 +34,7 @@ const Dashboard: React.FC = () => {
       if (response.ok) {
         setCart([...cart, formData]);
         setFormData({
-          user: userData.email,
+          email: userData.email,
           name: "",
           quantity: 0,
           price: 0,
