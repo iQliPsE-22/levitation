@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import logo from "../Assets/levi.png";
 import { useUser } from "../UserContext";
-import { Product } from "../App"; // Adjust the import path as necessary
+
+interface Product {
+  email: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
 
 interface InvoiceProps {
   cart: Product[];
