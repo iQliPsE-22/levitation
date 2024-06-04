@@ -39,13 +39,10 @@ const Signup: React.FC = () => {
       formDataToSubmit.append("phone", formData.phone);
       formDataToSubmit.append("password", formData.password);
 
-      const response = await fetch(
-        "https://levitation-back.vercel.app/signup",
-        {
-          method: "POST",
-          body: formDataToSubmit,
-        }
-      );
+      const response = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        body: formDataToSubmit,
+      });
       const data = await response.json();
       console.log(data);
       setFormData({
