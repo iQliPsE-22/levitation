@@ -6,7 +6,7 @@ The Ultimate Invoice Generator
 Generate your invoices from store front using this user Friendly Invoice Generator.
 </h3>
 <br>
-<h3>Get Started with it:</h3>h3>
+<h3>Get Started with it:</h3>
 git clone https://github.com/iQliPsE-22/levitation.git
 <br>
 npm install
