@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
-import logo from '../Assets/levi.png';
-import { useUser } from '../UserContext';
+import React, { useEffect } from "react";
+import logo from "../Assets/levi.png";
+import { useUser } from "../UserContext";
 
-// Define the Product interface with appropriate types
 interface Product {
   email: string;
   name: string;
@@ -10,26 +9,20 @@ interface Product {
   price: number;
 }
 
-// Define the props for the Invoice component with appropriate types
 interface InvoiceProps {
   cart: Product[];
   setCart: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
-// Define the UserContext return type
-interface UserData {
-  email: string;
-}
-
 const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const { userData } = useUser();
 
-  // Add type annotations to the parameters
   const calculateTotal = (quantity: number, price: number): number =>
     quantity * price;
 
   const totalAmount = cart.reduce(
-    (acc: number, item: Product) => acc + calculateTotal(item.quantity, item.price),
+    (acc: number, item: Product) =>
+      acc + calculateTotal(item.quantity, item.price),
     0
   );
 
@@ -38,45 +31,46 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const currentDate = new Date();
   const futureDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000); // Adding 15 days in milliseconds
 
-  const handleDownload = async (): Promise<void> => {
-    try {
-      const response = await fetch('https://levitation-back.onrender.com/generate-invoice', {
-        method: 'POST',
+  const handleDownload = async () => {
+    const response = await fetch(
+      "https://levitation-back.onrender.com/generate-invoice",
+      {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(cart),
-      });
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'invoice.pdf';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    } catch (err) {
-      console.error('Error downloading invoice:', err);
-    }
+      }
+    );
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "invoice.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   };
 
   const searchParams = new URLSearchParams(window.location.search);
-  const isPdf = searchParams.get('pdf') === 'true';
+  const isPdf = searchParams.get("pdf") === "true";
 
-  const fetchCart = async (): Promise<void> => {
+  const fetchCart = async () => {
     try {
-      const response = await fetch(`https://levitation-back.vercel.app/cart/${userData.email}`);
+      const response = await fetch(
+        `https://levitation-back.vercel.app/cart/${userData.email}`
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch cart data');
+        throw new Error("Failed to fetch cart data");
       }
-      const data: Product[] = await response.json();
-      console.log('Fetched cart data:', data);
+      const data = await response.json();
+      console.log("Fetched cart data:", data);
       setCart(data);
     } catch (err) {
-      console.error('Error fetching cart:', err);
+      console.error("Error fetching cart:", err);
     }
   };
-
   useEffect(() => {
     if (userData.email) {
       fetchCart();
@@ -92,7 +86,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
         <div className="flex justify-between items-center mt-8">
           <div>
             <div className="flex">
-              <img src={logo} className="h-10 w-10" alt="Logo" />
+              <img src={logo} className="h-10 w-10" />
               <h2 className="text-2xl font-bold">levitation</h2>
             </div>
             <p className="text-gray-500 text-right">infotech</p>
