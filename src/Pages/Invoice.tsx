@@ -33,7 +33,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
 
   const handleDownload = async () => {
     try {
-      const response = await fetch("http://localhost:3000/generate-invoice", {
+      const response = await fetch("https://levitation-back.onrender.com/generate-invoice", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,6 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      
     } catch (err) {
       console.error("Error downloading invoice:", err);
     }
