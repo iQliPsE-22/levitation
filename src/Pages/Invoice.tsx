@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import logo from "../Assets/levi.png";
 import { useUser } from "../UserContext";
 
+// Define the Product interface with appropriate types
 interface Product {
   email: string;
   name: string;
@@ -9,6 +10,7 @@ interface Product {
   price: number;
 }
 
+// Define the props for the Invoice component with appropriate types
 interface InvoiceProps {
   cart: Product[];
   setCart: React.Dispatch<React.SetStateAction<Product[]>>;
@@ -17,6 +19,7 @@ interface InvoiceProps {
 const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const { userData } = useUser();
 
+  // Add type annotations to the parameters
   const calculateTotal = (quantity: number, price: number): number =>
     quantity * price;
 
@@ -74,6 +77,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
       console.error("Error fetching cart:", err);
     }
   };
+
   useEffect(() => {
     if (userData.email) {
       fetchCart();
