@@ -1,11 +1,18 @@
 #Levitataion
+<h2>
 The Ultimate Invoice Generator
+</h2>
+<h3>
 Generate your invoices from store front using this user Friendly Invoice Generator.
-
-Get Started with it:
+</h3>
+<br>
+<h3>Get Started with it:</h3>h3>
 git clone https://github.com/iQliPsE-22/levitation.git
+<br>
 npm install
+<br>
 npm i react-router-dom
+<br>
 npm run dev
 
 
