@@ -70,7 +70,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch cart data");
       }
-      const data = await response.json();
+      const data: Product[] = await response.json();
       console.log("Fetched cart data:", data);
       setCart(data);
     } catch (err) {
