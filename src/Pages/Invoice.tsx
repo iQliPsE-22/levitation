@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import logo from "../Assets/levi.png";
 import { useUser } from "../UserContext";
 
@@ -33,13 +33,16 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
 
   const handleDownload = async () => {
     try {
-      const response = await fetch("https://levitation-back.onrender.com/generate-invoice", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cart),
-      });
+      const response = await fetch(
+        "https://levitation-back.onrender.com/generate-invoice",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(cart),
+        }
+      );
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
