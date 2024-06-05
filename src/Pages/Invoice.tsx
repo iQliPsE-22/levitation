@@ -59,7 +59,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `https://levitation-back.vercel.app/cart/${userData.email}`
+        `https://levitation-back.onrender.com/cart/${userData.email}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch cart data");
@@ -126,7 +126,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
             <p>INR {totalAmount.toFixed(2)}</p>
             <p>{gst.toFixed(2)}</p>
             <p className="text-blue-600 font-bold text-xl">
-              ₹ {grandTotal.toFixed(2)}
+              â¹ {grandTotal.toFixed(2)}
             </p>
           </div>
         </div>
