@@ -79,8 +79,8 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
     <>
       <Header />
       <div className="container mx-auto p-4 text-white w-full min-h-dvh">
-        <div className="flex items-center justify-around">
-          <div className="w-1/2 bg-[#3b3b3b] h-full p-8 text-center rounded">
+        <div className="flex items-center justify-around flex-col md:flex-row">
+          <div className="w-full bg-[#3b3b3b] h-full p-8 text-center rounded lg:w-1/2">
             <h2 className="julius text-2xl mb-4">Inventory</h2>
             <form
               className="bg-[#202020] rounded p-8 flex flex-col gap-4"
@@ -153,7 +153,7 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
               </Button>
             </form>
           </div>
-          <div className="ml-2 w-1/2 bg-gray-900 min-h-full p-8 text-center rounded">
+          <div className="ml-2 w-full lg:w-1/2 bg-gray-900 min-h-full p-8 text-center rounded">
             <h2 className="julius text-2xl mb-4">Cart</h2>
             {cart.length > 0 ? (
               <table className="w-full bg-gray-800 text-white rounded-lg">
