@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import logo from "../Assets/levi.png";
-import { useUser } from "../UserContext";
+import React, { useEffect } from 'react';
+import logo from '../Assets/levi.png';
+import { useUser } from '../UserContext';
 
 // Define the Product interface with appropriate types
 interface Product {
@@ -16,6 +16,11 @@ interface InvoiceProps {
   setCart: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
+// Define the UserContext return type
+interface UserData {
+  email: string;
+}
+
 const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const { userData } = useUser();
 
@@ -24,8 +29,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
     quantity * price;
 
   const totalAmount = cart.reduce(
-    (acc: number, item: Product) =>
-      acc + calculateTotal(item.quantity, item.price),
+    (acc: number, item: Product) => acc + calculateTotal(item.quantity, item.price),
     0
   );
 
@@ -34,47 +38,42 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const currentDate = new Date();
   const futureDate = new Date(currentDate.getTime() + 15 * 24 * 60 * 60 * 1000); // Adding 15 days in milliseconds
 
-  const handleDownload = async () => {
+  const handleDownload = async (): Promise<void> => {
     try {
-      const response = await fetch(
-        "https://levitation-back.onrender.com/generate-invoice",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(cart),
-        }
-      );
+      const response = await fetch('https://levitation-back.onrender.com/generate-invoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cart),
+      });
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
+      const a = document.createElement('a');
       a.href = url;
-      a.download = "invoice.pdf";
+      a.download = 'invoice.pdf';
       document.body.appendChild(a);
       a.click();
       a.remove();
     } catch (err) {
-      console.error("Error downloading invoice:", err);
+      console.error('Error downloading invoice:', err);
     }
   };
 
   const searchParams = new URLSearchParams(window.location.search);
-  const isPdf = searchParams.get("pdf") === "true";
+  const isPdf = searchParams.get('pdf') === 'true';
 
-  const fetchCart = async () => {
+  const fetchCart = async (): Promise<void> => {
     try {
-      const response = await fetch(
-        `https://levitation-back.vercel.app/cart/${userData.email}`
-      );
+      const response = await fetch(`https://levitation-back.vercel.app/cart/${userData.email}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch cart data");
+        throw new Error('Failed to fetch cart data');
       }
       const data: Product[] = await response.json();
-      console.log("Fetched cart data:", data);
+      console.log('Fetched cart data:', data);
       setCart(data);
     } catch (err) {
-      console.error("Error fetching cart:", err);
+      console.error('Error fetching cart:', err);
     }
   };
 
