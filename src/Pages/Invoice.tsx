@@ -93,7 +93,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
         <div className="flex justify-between items-center mt-8">
           <div>
             <div className="flex">
-              <img src={logo} className="h-10 w-10" />
+              <img src={logo} className="h-10 w-10" alt="Logo" />
               <h2 className="text-2xl font-bold">levitation</h2>
             </div>
             <p className="text-gray-500 text-right">infotech</p>
