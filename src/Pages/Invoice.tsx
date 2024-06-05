@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import logo from "../Assets/levi.png";
 import { useUser } from "../UserContext";
 
