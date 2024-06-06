@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Button from "./Button";
 import { useUser } from "../UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 interface HamburgerProps {
   isOpen: boolean;
@@ -41,18 +41,26 @@ const Hamburger: React.FC<HamburgerProps> = ({ isOpen, onClose }) => {
       <h1 className="julius text-2xl text-center p-4">LOST YOUR WAY?</h1>
       <ul className="h-full flex flex-col justify-between">
         <div className="p-4 julius text-center ">
-          <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
-            Home
-          </li>
-          <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
-            Dashboard
-          </li>
-          <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
-            Invoice
-          </li>
-          <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
-            Contact Us
-          </li>
+          <Link to="/">
+            <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
+              Home
+            </li>
+          </Link>
+          <Link to="/dashboard">
+            <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
+              Dashboard
+            </li>
+          </Link>
+          <Link to="/invoice">
+            <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
+              Invoice
+            </li>
+          </Link>
+          <Link to="/contact">
+            <li className="m-4 bg-[#404040] p-3 rounded hover:bg-[#303030] cursor-pointer">
+              Contact Us
+            </li>
+          </Link>
         </div>
         <div className="pb-16">
           <Button color="#404040" hoverColor="#303030">

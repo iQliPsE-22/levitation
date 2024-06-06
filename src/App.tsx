@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Dashboard from "./Pages/Dashboard";
 import Invoice from "./Pages/Invoice";
+import Header from "./components/Header";
 
 interface Product {
   email: string;
@@ -15,9 +16,21 @@ interface Product {
 const App = () => {
   const [cart, setCart] = useState<Product[]>([]);
 
+  const LocationBasedHeader = () => {
+    const location = useLocation();
+    const noHeaderRoutes = ["/login", "/"]; // Add more routes as needed
+
+    if (noHeaderRoutes.includes(location.pathname)) {
+      return null;
+    }
+
+    return <Header />;
+  };
+
   return (
     <div>
       <BrowserRouter>
+        <LocationBasedHeader />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Signup />} />

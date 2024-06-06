@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState ,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import Button from "../components/Button";
@@ -7,7 +7,9 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>("Welcome to Levitation");
   const { setUserData } = useUser();
-
+  useEffect(() => {
+    setUserData(null);
+  }, []);
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const user = (document.getElementById("user") as HTMLInputElement).value;

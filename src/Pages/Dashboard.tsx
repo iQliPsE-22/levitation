@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Button from "../components/Button";
-import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
 
@@ -87,7 +86,6 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
 
   return (
     <>
-      <Header />
       <div className="container mx-auto p-4 text-white w-full min-h-dvh">
         <div className="flex items-center justify-around flex-col md:flex-row">
           <div className="w-full bg-[#3b3b3b] h-full p-8 text-center rounded lg:w-1/2">
