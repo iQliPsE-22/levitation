@@ -88,10 +88,10 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
     <>
       <div className="container mx-auto p-4 text-white w-full min-h-fit">
         <div className="flex items-center justify-around flex-col md:flex-row">
-          <div className="w-full bg-[#3b3b3b] h-full p-8 text-center rounded lg:w-1/2">
+          <div className="w-full bg-[#3b3b3b] h-full p-2 lg:p-8 text-center rounded lg:w-1/2">
             <h2 className="julius text-2xl mb-4">Inventory</h2>
             <form
-              className="bg-[#202020] rounded p-8 flex flex-col gap-4"
+              className="bg-[#202020] rounded p-6 lg:p-8 flex flex-col gap-4"
               onSubmit={handleProduct}
             >
               <input
