@@ -10,6 +10,7 @@ interface FormData {
   email: string;
   phone: string;
   password: string;
+  confirm: string;
 }
 
 const Signup: React.FC = () => {
