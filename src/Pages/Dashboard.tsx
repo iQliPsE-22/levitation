@@ -86,7 +86,7 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
 
   return (
     <>
-      <div className="container mx-auto p-4 text-white w-full min-h-dvh">
+      <div className="container mx-auto p-4 text-white w-full min-h-fit">
         <div className="flex items-center justify-around flex-col md:flex-row">
           <div className="w-full bg-[#3b3b3b] h-full p-8 text-center rounded lg:w-1/2">
             <h2 className="julius text-2xl mb-4">Inventory</h2>
