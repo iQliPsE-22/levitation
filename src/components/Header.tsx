@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import HamburgerIcon from "../Assets/icons8-hamburger-menu.svg";
 import Hamburger from "./Hamburger";
 
-const Header: React.FC = ({ loc }) => {
+const Header: React.FC = () => {
   const [showHamburger, setShowHamburger] = useState(false);
   const location = window.location.pathname;
   return (
