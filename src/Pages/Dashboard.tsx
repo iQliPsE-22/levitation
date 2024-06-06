@@ -19,7 +19,7 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
   const { userData } = useUser();
   const [formData, setFormData] = useState<Product>({
-    email: userData.email,
+    email: userData?.email || "",
     name: "",
     quantity: 0,
     price: 0,
@@ -31,6 +31,7 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
 
   const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!userData) return; // Add check for userData
     try {
       const response = await fetch(
         "https://levitation-back.onrender.com/cart",
@@ -45,7 +46,6 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        // setCart([...cart, formData]);
         handleCart();
         setFormData({
           email: userData.email,
@@ -58,7 +58,9 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
       console.error("Error adding product:", err);
     }
   };
+
   const fetchCart = async () => {
+    if (!userData) return; // Add check for userData
     try {
       const response = await fetch(
         `https://levitation-back.onrender.com/cart/${userData.email}`
@@ -74,10 +76,15 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
   };
 
   useEffect(() => {
-    if (userData.email) {
+    if (userData?.email) {
       fetchCart();
     }
   }, [userData]);
+
+  if (!userData) {
+    return <p>Loading...</p>; // Or some other fallback UI
+  }
+
   return (
     <>
       <Header />
