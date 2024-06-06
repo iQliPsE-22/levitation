@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Button from "./Button";
 import { useUser } from "../UserContext";
 import { useNavigate } from "react-router-dom";
+
 interface HamburgerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -10,6 +11,7 @@ interface HamburgerProps {
 const Hamburger: React.FC<HamburgerProps> = ({ isOpen, onClose }) => {
   const { setUserData } = useUser();
   const navigate = useNavigate();
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -23,11 +25,13 @@ const Hamburger: React.FC<HamburgerProps> = ({ isOpen, onClose }) => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [onClose]);
+
   const handleLogout = () => {
     setUserData(null);
     onClose();
     navigate("/login");
   };
+
   return (
     <div
       className={`fixed top-0 h-screen bg-black text-white p-4 w-10/12 lg:w-1/3 transition-transform duration-300 transform ${

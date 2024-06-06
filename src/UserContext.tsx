@@ -15,8 +15,8 @@ interface UserData {
 }
 
 interface UserContextType {
-  userData: UserData;
-  setUserData: React.Dispatch<React.SetStateAction<UserData>>;
+  userData: UserData | null;
+  setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,32 +26,22 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [userData, setUserData] = useState<UserData>(() => {
+  const [userData, setUserData] = useState<UserData | null>(() => {
     if (typeof window !== "undefined") {
       const storedUserData = localStorage.getItem("userData");
-      return storedUserData
-        ? JSON.parse(storedUserData)
-        : {
-            profilePicture: null,
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-          };
+      return storedUserData ? JSON.parse(storedUserData) : null;
     } else {
-      return {
-        profilePicture: null,
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-      };
+      return null;
     }
   });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("userData", JSON.stringify(userData));
+      if (userData) {
+        localStorage.setItem("userData", JSON.stringify(userData));
+      } else {
+        localStorage.removeItem("userData");
+      }
     }
     console.log(userData);
   }, [userData]);

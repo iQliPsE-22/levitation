@@ -42,15 +42,15 @@ const Signup: React.FC = () => {
       formDataToSubmit.append("phone", formData.phone);
       formDataToSubmit.append("password", formData.password);
 
-      if (formData.password.length < 8) {
-        setMessage("Password must be at least 8 characters long");
-        return;
-      }
+      // if (formData.password.length < 8) {
+      //   setMessage("Password must be at least 8 characters long");
+      //   return;
+      // }
       if (formData.password !== formData.confirm) {
         setMessage("Passwords do not match");
         return;
       }
-
+      console.log(formDataToSubmit);
       const response = await fetch(
         "https://levitation-back.onrender.com/signup",
         {
