@@ -14,6 +14,7 @@ interface FormData {
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState<string>("Welcome to Levitation");
 
   const [formData, setFormData] = useState<FormData>({
     profilePicture: null,
@@ -22,6 +23,7 @@ const Signup: React.FC = () => {
     email: "",
     phone: "",
     password: "",
+    confirm: "",
   });
 
   const handleFormSubmit = async (e: FormEvent) => {
@@ -38,6 +40,15 @@ const Signup: React.FC = () => {
       formDataToSubmit.append("email", formData.email);
       formDataToSubmit.append("phone", formData.phone);
       formDataToSubmit.append("password", formData.password);
+
+      if (formData.password.length < 8) {
+        setMessage("Password must be at least 8 characters long");
+        return;
+      }
+      if (formData.password !== formData.confirm) {
+        setMessage("Passwords do not match");
+        return;
+      }
 
       const response = await fetch(
         "https://levitation-back.onrender.com/signup",
@@ -90,7 +101,16 @@ const Signup: React.FC = () => {
           className="absolute flex flex-col gap-2 p-8 w-screen md:p-10 w-4/5 md:w-1/3 top-10 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-90 rounded-md transition-opacity duration-1000 text-white z-10"
           onSubmit={handleFormSubmit}
         >
-          <h1 className="text-2xl text-center">Signup</h1>
+          <h1 className="text-2xl text-center mb-2 ">SIGN UP </h1>
+          {message && (
+            <h1
+              className={`text-xl itim text-center text-white ${
+                message !== "Welcome to Levitation" ? "text-red-500" : ""
+              }`}
+            >
+              {message}
+            </h1>
+          )}
           <label htmlFor="dp">Profile Picture</label>
           <input
             type="file"
@@ -156,7 +176,9 @@ const Signup: React.FC = () => {
 
           <label htmlFor="confirm">Confirm Password</label>
           <input
+            name="confirm"
             type="password"
+            onChange={handleInputChange}
             className="p-2 rounded-md border-none bg-gray-200 text-black"
           />
           <Button color="#6d28d9" hoverColor="#46198c">

@@ -3,6 +3,11 @@
   margin: 0;
   padding: 0;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 .back h1 {
   background-size: cover;
   background-position: center;
@@ -16,6 +21,9 @@
 }
 .julius {
   font-family: "Julius Sans One", sans-serif;
+}
+.itim {
+  font-family: "Itim", cursive;
 }
 .container {
   background-image: url("./Assets/stacked-peaks-haikei.svg");

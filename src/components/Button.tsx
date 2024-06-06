@@ -12,7 +12,7 @@ const Button: React.FC<ButtonProps> = (props) => {
   return (
     <div>
       <button
-        className="p-3 mt-2 text-white cursor-pointer rounded-lg w-full"
+        className="julius p-3 mt-2 text-white cursor-pointer rounded-lg w-full"
         style={{ backgroundColor: hovered ? props.hoverColor : props.color }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
