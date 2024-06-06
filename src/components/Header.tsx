@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import HamburgerIcon from "../Assets/icons8-hamburger-menu.svg";
 import Hamburger from "./Hamburger";
 
-const Header: React.FC = () => {
+const Header: React.FC = ({ loc }) => {
   const [showHamburger, setShowHamburger] = useState(false);
-
+  const location = window.location.pathname;
   return (
     <>
       <div className="flex items-center">
@@ -17,11 +17,14 @@ const Header: React.FC = () => {
         <div className="julius text-black flex items-center justify-center bg-white w-full min-h-fit h-16 m-0 ">
           <h2>Levitation</h2>
           <Link to="/">
-            <h2 className="text-2xl text-center">DASHBOARD</h2>
+            <h2 className="text-2xl text-center">{location}</h2>
           </Link>
         </div>
       </div>
-      <Hamburger isOpen={showHamburger} onClose={() => setShowHamburger(false)} />
+      <Hamburger
+        isOpen={showHamburger}
+        onClose={() => setShowHamburger(false)}
+      />
     </>
   );
 };
