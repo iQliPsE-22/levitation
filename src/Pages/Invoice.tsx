@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import React, { useEffect } from "react";
 import logo from "../Assets/levi.png";
 import { useUser } from "../UserContext";
 
@@ -57,6 +57,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
   const isPdf = searchParams.get("pdf") === "true";
 
   const fetchCart = async () => {
+    if (!userData) return; // Add check for userData
     try {
       const response = await fetch(
         `https://levitation-back.onrender.com/cart/${userData.email}`
@@ -71,11 +72,16 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
       console.error("Error fetching cart:", err);
     }
   };
+
   useEffect(() => {
-    if (userData.email) {
+    if (userData?.email) {
       fetchCart();
     }
   }, [userData]);
+
+  if (!userData) {
+    return <p>Loading...</p>; // Or some other fallback UI
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -126,7 +132,7 @@ const Invoice: React.FC<InvoiceProps> = ({ cart, setCart }) => {
             <p>INR {totalAmount.toFixed(2)}</p>
             <p>{gst.toFixed(2)}</p>
             <p className="text-blue-600 font-bold text-xl">
-              â¹ {grandTotal.toFixed(2)}
+              ₹ {grandTotal.toFixed(2)}
             </p>
           </div>
         </div>
