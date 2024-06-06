@@ -32,7 +32,7 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
   const handleProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://levitation-back.vercel.app/cart", {
+      const response = await fetch("https://levitation-back.onrender.com/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const Dashboard: React.FC<DashboardProps> = ({ cart, setCart }) => {
   const fetchCart = async () => {
     try {
       const response = await fetch(
-        `https://levitation-back.vercel.app/cart/${userData.email}`
+        `https://levitation-back.onrender.com/cart/${userData.email}`
       ); // Fetch cart data specific to the user
       const data = await response.json();
       console.log(data);
