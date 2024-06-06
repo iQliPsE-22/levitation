@@ -61,7 +61,6 @@ const Signup: React.FC = () => {
       const data = await response.json();
       console.log(data);
       setFormData({
-        ...formData,
         profilePicture: null,
         firstName: "",
         lastName: "",
@@ -91,6 +90,7 @@ const Signup: React.FC = () => {
       [name]: value,
     }));
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen h-[125vh] bg-cover bg-fixed bg-gray-400 ">
       <div className="hidden lg:flex items-center justify-center w-full my-5 z-0 text-[10vw] md:text-[20rem]">
